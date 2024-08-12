@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'usetiful-react-native';
+import { multiply, Usetiful } from 'usetiful-react-native';
 
 export default function App() {
   const [result, setResult] = useState<number | undefined>();
@@ -11,6 +11,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Usetiful title="Nice!" />
       <Text>Result: {result}</Text>
     </View>
   );
