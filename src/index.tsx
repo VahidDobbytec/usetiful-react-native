@@ -91,9 +91,7 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
         const { tours: _tours } = (await response.json()) as Response;
         setTours(_tours);
       } catch (error) {
-        console.log('=====error====>', error.message);
-      } finally {
-        //setLoading(false);
+        // console.log('=====error====>', error.message);
       }
     };
 
@@ -240,10 +238,6 @@ const Body = ({ content }: BodyProps) => {
   const [webViewHeight, setWebViewHeight] = useState(0);
   const webviewRef = useRef(null);
 
-  const handleWebViewMessage = (event) => {
-    setWebViewHeight(Number(event.nativeEvent.data));
-  };
-
   const injectedJavaScript = `
     (function() {
       const height = document.documentElement.scrollHeight;
@@ -254,7 +248,6 @@ const Body = ({ content }: BodyProps) => {
   const body = useMemo(() => {
     return `${content}${bodyCss}`;
   }, [content]);
-  console.log('======body=====>', body);
 
   return (
     <View style={{ height: webViewHeight / 4 }}>
@@ -263,7 +256,9 @@ const Body = ({ content }: BodyProps) => {
         originWhitelist={['*']}
         source={{ html: body }}
         injectedJavaScript={injectedJavaScript}
-        onMessage={handleWebViewMessage}
+        onMessage={(event) => {
+          setWebViewHeight(Number(event.nativeEvent.data));
+        }}
       />
     </View>
   );

@@ -1,18 +1,13 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply, Usetiful } from 'usetiful-react-native';
+import { StyleSheet, View } from 'react-native';
+import { RootStack } from './RootStack';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
-  const [result, setResult] = useState<number | undefined>();
-
-  useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Usetiful title="Nice!" />
-      <Text>Result: {result}</Text>
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
     </View>
   );
 }
@@ -22,6 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'yellow',
   },
   box: {
     width: 60,
