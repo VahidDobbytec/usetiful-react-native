@@ -67,6 +67,7 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
   const viewRef = useRef<View>(null);
 
   const currentRouteName = useCurrentRouteName();
+  console.log('====USETIFUL LOG=====>', currentRouteName);
 
   const [tours, setTours] = useState<Tour[]>();
   const [tourStepIndex, setTourStepIndex] = useState<number>(0);
