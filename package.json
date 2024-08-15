@@ -1,6 +1,6 @@
 {
   "name": "usetiful-react-native",
-  "version": "0.1.0",
+  "version": "0.1.0-local-2",
   "description": "Usetiful react native support app",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -185,5 +185,8 @@
   "create-react-native-library": {
     "type": "library",
     "version": "0.40.0"
+  },
+  "dependencies": {
+    "usetiful-react-native": "github:VahidDobbytec/usetiful-react-native"
   }
 }

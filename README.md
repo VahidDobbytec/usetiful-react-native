@@ -1,28 +1,33 @@
 # usetiful-react-native
 
-Usetiful react native support app
+Usetiful react native app
 
 ## Installation
 
 ```sh
-npm install usetiful-react-native
+npm install https://github.com/VahidDobbytec/usetiful-react-native
+```
+
+```sh
+yarn add usetiful-react-native@https://github.com/VahidDobbytec/usetiful-react-native
 ```
 
 ## Usage
 
-
 ```js
-import { multiply } from 'usetiful-react-native';
-
-// ...
-
-const result = await multiply(3, 7);
+import { Usetiful } from 'usetiful-react-native';
 ```
 
+Wrap your APP with Usetiful tag
+Note: Usetiful must be child of NavigationContainer
 
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+```js
+<NavigationContainer>
+  <Usetiful>
+    <YourApp />
+  </Usetiful>
+</NavigationContainer>
+```
 
 ## License
 
