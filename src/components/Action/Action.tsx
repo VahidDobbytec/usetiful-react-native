@@ -1,20 +1,17 @@
 import { useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import type { ActionType } from '../../types';
+import { useStore } from '../../stores/useStore';
 
 type ActionProps = {
   action: ActionType;
-  setTourStepIndex: (to: number) => void;
-  tourStepIndex: number;
   onColse: () => void;
 };
-export const USAction = ({
-  action,
-  setTourStepIndex,
-  tourStepIndex,
-  onColse,
-}: ActionProps) => {
+export const USAction = ({ action, onColse }: ActionProps) => {
   const { styleType, type, value } = action;
+
+  const setTourStepIndex = useStore((s) => s.setTourStepIndex);
+  const tourStepIndex = useStore((s) => s.tourStepIndex);
 
   const onPress = useMemo(() => {
     switch (type) {

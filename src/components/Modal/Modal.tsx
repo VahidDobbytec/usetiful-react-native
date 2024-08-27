@@ -1,20 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Body } from './Body';
+import { Body } from '../Body';
 import { Action } from '../Action';
 import type { TourStep } from '../../types';
 
 type ModalProps = {
   step: TourStep;
   onColse: () => void;
-  tourStepIndex: number;
-  setTourStepIndex: (to: number) => void;
 };
-export const Modal = ({
-  step,
-  onColse,
-  tourStepIndex,
-  setTourStepIndex,
-}: ModalProps) => {
+export const Modal = ({ step, onColse }: ModalProps) => {
   const { title, actions, content } = step;
 
   return (
@@ -30,12 +23,7 @@ export const Modal = ({
       </View>
       <View style={styles.modalFooter}>
         {actions.map((action) => {
-          return (
-            <Action
-              key={action.id}
-              {...{ action, onColse, tourStepIndex, setTourStepIndex }}
-            />
-          );
+          return <Action key={action.id} {...{ action, onColse }} />;
         })}
       </View>
     </View>

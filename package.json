@@ -82,7 +82,8 @@
     "react-native-builder-bob": "^0.29.0",
     "react-native-webview": "^13.0.0",
     "release-it": "^15.0.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "zustand": "^4.5.5"
   },
   "resolutions": {
     "@types/react": "^18.2.44"
@@ -185,8 +186,5 @@
   "create-react-native-library": {
     "type": "library",
     "version": "0.40.0"
-  },
-  "dependencies": {
-    "usetiful-react-native": "github:VahidDobbytec/usetiful-react-native"
   }
 }

@@ -18,10 +18,15 @@ export type TourStep = {
     content: string;
     id: string;
     title: string;
-    type: 'modal' | string;
+    type: 'modal' | 'pointer' | string;
+    element: string;
 };
 export type Target = {
     type: 'address-simple' | string;
     url?: string;
+};
+export type ElementRefType = {
+    key: string;
+    ref: React.RefObject<any>;
 };
 //# sourceMappingURL=index.d.ts.map

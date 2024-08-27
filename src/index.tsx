@@ -1,8 +1,11 @@
-import { useEffect, useMemo, useState, type PropsWithChildren } from 'react';
+import { useEffect, useState, type PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
-import type { Tour, UsetifulResponse } from './types';
+import type { UsetifulResponse } from './types';
 import { Modal } from './components/Modal';
+import { useStore } from './stores/useStore';
+import { Pointer } from './components/Pointer';
+export { useRefRegister } from './hooks/useRefRegister';
 
 const useCurrentRouteName = () => {
   const [currentRouteName, setCurrentRouteName] = useState('');
@@ -33,10 +36,14 @@ const useCurrentRouteName = () => {
 
 export const Usetiful = ({ children }: PropsWithChildren) => {
   const currentRouteName = useCurrentRouteName();
-  console.log('====USETIFUL LOG=====>', currentRouteName);
 
-  const [tours, setTours] = useState<Tour[]>();
-  const [tourStepIndex, setTourStepIndex] = useState<number>(0);
+  const tours = useStore((s) => s.tours);
+  const setTours = useStore((s) => s.setTours);
+  const setTourStepIndex = useStore((s) => s.setTourStepIndex);
+  const tourStepIndex = useStore((s) => s.tourStepIndex);
+  const availableTour = useStore((s) => s.availableTour);
+  const setAvailableTour = useStore((s) => s.setAvailableTour);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -63,20 +70,22 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
     };
 
     fetchData();
-  }, []);
+  }, [setTours]);
 
-  const availableTour: Tour | undefined = useMemo(() => {
+  useEffect(() => {
     setTourStepIndex(0);
     if (tours && tours.length) {
-      return tours.find((tour) =>
-        tour.targets.find(
-          (target) => !!target.url && currentRouteName.includes(target.url)
+      setAvailableTour(
+        tours.find((tour) =>
+          tour.targets.find(
+            (target) => !!target.url && currentRouteName.includes(target.url)
+          )
         )
       );
     } else {
-      return undefined;
+      setAvailableTour(undefined);
     }
-  }, [currentRouteName, tours]);
+  }, [currentRouteName, setAvailableTour, setTourStepIndex, tours]);
 
   useEffect(() => {
     setSelfClosed(false);
@@ -91,21 +100,29 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
   //   }
   // };
 
+  const step =
+    !!availableTour && !selfClosed && availableTour.steps[tourStepIndex]
+      ? availableTour.steps[tourStepIndex]
+      : undefined;
+
   return (
     <View style={styles.UsetifulContainer}>
       {children}
-      {!!availableTour && !selfClosed && availableTour.steps[tourStepIndex] && (
-        <View style={styles.usetifulLayer}>
-          <Modal
-            step={availableTour.steps[tourStepIndex]}
-            onColse={() => setSelfClosed(true)}
-            tourStepIndex={tourStepIndex}
-            setTourStepIndex={(to: number) => {
-              if (availableTour.steps.length - 1 >= to && to >= 0) {
-                setTourStepIndex(to);
-              }
-            }}
-          />
+      {step && (
+        <View
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{
+            ...styles.usetifulLayer,
+            backgroundColor:
+              step.type === 'pointer' ? 'transparent' : '#000000cc',
+          }}
+        >
+          {step.type === 'modal' && (
+            <Modal step={step} onColse={() => setSelfClosed(true)} />
+          )}
+          {step.type === 'pointer' && (
+            <Pointer step={step} onColse={() => setSelfClosed(true)} />
+          )}
         </View>
       )}
     </View>
