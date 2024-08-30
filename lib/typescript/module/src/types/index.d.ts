@@ -18,7 +18,7 @@ export type TourStep = {
     content: string;
     id: string;
     title: string;
-    type: 'modal' | 'pointer' | string;
+    type: 'modal' | 'pointer' | 'slideout';
     element: string;
 };
 export type Target = {
@@ -28,5 +28,13 @@ export type Target = {
 export type ElementRefType = {
     key: string;
     ref: React.RefObject<any>;
+};
+export type Measure = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    pageX: number;
+    pageY: number;
 };
 //# sourceMappingURL=index.d.ts.map

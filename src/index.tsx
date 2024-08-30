@@ -1,10 +1,11 @@
-import { useEffect, useState, type PropsWithChildren } from 'react';
+import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
-import type { UsetifulResponse } from './types';
+import type { Measure, UsetifulResponse } from './types';
 import { Modal } from './components/Modal';
 import { useStore } from './stores/useStore';
 import { Pointer } from './components/Pointer';
+import { Slideout } from './components/Slideout';
 export { useRefRegister } from './hooks/useRefRegister';
 
 const useCurrentRouteName = () => {
@@ -34,8 +35,14 @@ const useCurrentRouteName = () => {
   return currentRouteName;
 };
 
-export const Usetiful = ({ children }: PropsWithChildren) => {
+type Props = {
+  token: string;
+} & PropsWithChildren;
+
+export const Usetiful = ({ children, token }: Props) => {
   const currentRouteName = useCurrentRouteName();
+
+  const layoutRef = useRef<View>(null);
 
   const tours = useStore((s) => s.tours);
   const setTours = useStore((s) => s.setTours);
@@ -43,6 +50,7 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
   const tourStepIndex = useStore((s) => s.tourStepIndex);
   const availableTour = useStore((s) => s.availableTour);
   const setAvailableTour = useStore((s) => s.setAvailableTour);
+  const [layoutMeasure, setLayoutMeasure] = useState<Measure>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +60,7 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
           {
             method: 'GET',
             headers: {
-              'X-Auth-Token': '34ae1d22e7615d614bd3a17920a907c0',
+              'X-Auth-Token': token,
               'X-Requested-With': 'XMLHttpRequest',
               'Content-Type': 'application/json; charset=utf-8',
             },
@@ -70,7 +78,7 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
     };
 
     fetchData();
-  }, [setTours]);
+  }, [setTours, token]);
 
   useEffect(() => {
     setTourStepIndex(0);
@@ -92,21 +100,23 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
   }, [currentRouteName]);
   const [selfClosed, setSelfClosed] = useState(false);
 
-  // const measureElement = () => {
-  //   if (viewRef.current) {
-  //     viewRef.current.measure((x, y, width, height, pageX, pageY) => {
-  //       Alert.alert(`Element position: X: ${pageX}, Y: ${pageY}, Width: ${width}, Height: ${height}`);
-  //     });
-  //   }
-  // };
-
   const step =
     !!availableTour && !selfClosed && availableTour.steps[tourStepIndex]
       ? availableTour.steps[tourStepIndex]
       : undefined;
 
+  useEffect(() => {
+    if (layoutRef && layoutRef.current) {
+      //@ts-ignore
+      layoutRef?.current.measure((x, y, width, height, pageX, pageY) => {
+        setLayoutMeasure({ x, y, width, height, pageX, pageY });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layoutRef.current]);
+
   return (
-    <View style={styles.UsetifulContainer}>
+    <View style={styles.UsetifulContainer} ref={layoutRef}>
       {children}
       {step && (
         <View
@@ -114,14 +124,23 @@ export const Usetiful = ({ children }: PropsWithChildren) => {
           style={{
             ...styles.usetifulLayer,
             backgroundColor:
-              step.type === 'pointer' ? 'transparent' : '#000000cc',
+              step.type === 'modal' ? '#000000cc' : 'transparent',
+            justifyContent:
+              step.type === 'slideout' ? 'flex-end' : 'flex-start',
           }}
         >
           {step.type === 'modal' && (
             <Modal step={step} onColse={() => setSelfClosed(true)} />
           )}
           {step.type === 'pointer' && (
-            <Pointer step={step} onColse={() => setSelfClosed(true)} />
+            <Pointer
+              step={step}
+              onColse={() => setSelfClosed(true)}
+              layoutMeasure={layoutMeasure}
+            />
+          )}
+          {step.type === 'slideout' && (
+            <Slideout step={step} onColse={() => setSelfClosed(true)} />
           )}
         </View>
       )}

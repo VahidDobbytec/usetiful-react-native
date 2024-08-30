@@ -1,27 +1,14 @@
-import { StyleSheet, View } from 'react-native';
 import { RootStack } from './RootStack';
 import { NavigationContainer } from '@react-navigation/native';
 
+import { Usetiful } from 'usetiful-react-native';
+
 export default function App() {
   return (
-    <View style={styles.container}>
-      <NavigationContainer>
+    <NavigationContainer>
+      <Usetiful token="34ae1d22e7615d614bd3a17920a907c0">
         <RootStack />
-      </NavigationContainer>
-    </View>
+      </Usetiful>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'yellow',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});

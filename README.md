@@ -23,7 +23,7 @@ Note: Usetiful must be child of NavigationContainer
 
 ```js
 <NavigationContainer>
-  <Usetiful>
+  <Usetiful token="YOUR_USETIFUL_TOKEN">
     <YourApp />
   </Usetiful>
 </NavigationContainer>
