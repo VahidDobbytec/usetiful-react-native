@@ -29,6 +29,44 @@ Note: Usetiful must be child of NavigationContainer
 </NavigationContainer>
 ```
 
+To use Pointers you need to register your element to our custom hook.
+You can pick any key for your Ref and register it by useRefRegister, then use your key as a selector on Usetiful control panel selector.
+
+```js
+useRefRegister(
+  { key: 'Test1', ref: viewRef },
+  { key: 'SecondView', ref: secondViewRef },
+  { key: 'NextView', ref: nextViewRef }
+);
+```
+
+Example:
+```js
+const viewRef = useRef < View > null;
+const secondViewRef = useRef < View > null;
+const nextViewRef = useRef < View > null;
+
+useRefRegister(
+  { key: 'Test1', ref: viewRef },
+  { key: 'SecondView', ref: secondViewRef },
+  { key: 'NextView', ref: nextViewRef }
+);
+
+return (
+  <View>
+    <View ref={viewRef}>
+      <Text>First Pointer</Text>
+    </View>
+    <View ref={secondViewRef}>
+      <Text>Second Pointer</Text>
+    </View>
+    <View ref={nextViewRef}>
+      <Text>Third Pointer</Text>
+    </View>
+  </View>
+);
+```
+
 ## License
 
 MIT
