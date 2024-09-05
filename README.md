@@ -5,11 +5,11 @@ Usetiful react native app
 ## Installation
 
 ```sh
-npm install https://github.com/VahidDobbytec/usetiful-react-native
+npm install https://github.com/usetiful/usetiful-react-native
 ```
 
 ```sh
-yarn add usetiful-react-native@https://github.com/VahidDobbytec/usetiful-react-native
+yarn add usetiful-react-native@https://github.com/usetiful/usetiful-react-native
 ```
 
 ## Usage

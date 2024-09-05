@@ -52,14 +52,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VahidDobbytec/usetiful-react-native.git"
+    "url": "git+https://github.com/usetiful/usetiful-react-native.git"
   },
-  "author": "Vahid <vahid@dobbytec.com> (https://github.com/VahidDobbytec)",
+  "author": "Vahid <vahid@dobbytec.com> (https://github.com/usetiful)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/VahidDobbytec/usetiful-react-native/issues"
+    "url": "https://github.com/usetiful/usetiful-react-native/issues"
   },
-  "homepage": "https://github.com/VahidDobbytec/usetiful-react-native#readme",
+  "homepage": "https://github.com/usetiful/usetiful-react-native#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
