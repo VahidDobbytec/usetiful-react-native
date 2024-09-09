@@ -1,4 +1,10 @@
 {
   "extends": "./tsconfig",
-  "exclude": ["example", "lib"]
+  "compilerOptions": {
+    "declaration": true,  // Ensures TypeScript generates declaration files
+    "emitDeclarationOnly": true,  // Only output declaration files
+    "declarationMap": true,  // Generates .d.ts.map files to improve debugging experience
+    "noEmit": false  // Override the noEmit option from the extended tsconfig
+  },
+  "exclude": ["example", "lib"]  // Exclude files that shouldn’t be part of the build
 }
