@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
 import type { Measure, UsetifulResponse } from './types';
@@ -53,31 +59,36 @@ export const Usetiful = ({ children, token }: Props) => {
   const [layoutMeasure, setLayoutMeasure] = useState<Measure>();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          'https://www.usetiful.com/api-space/data.json?lang=en',
-          {
-            method: 'GET',
-            headers: {
-              'X-Auth-Token': token,
-              'X-Requested-With': 'XMLHttpRequest',
-              'Content-Type': 'application/json; charset=utf-8',
-            },
+    const fetchData = () => {
+      fetch('https://www.usetiful.com/api-space/data.json?lang=en', {
+        method: 'GET',
+        headers: {
+          'X-Auth-Token': '34ae1d22e7615d614bd3a17920a907c0',
+          'X-Requested-With': 'XMLHttpRequest',
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const { tours: _tours } = (await response.json()) as UsetifulResponse;
-        setTours(_tours);
-      } catch (error) {
-        // console.log('=====error====>', error.message);
-      }
+          response.json().then((res: UsetifulResponse) => {
+            setTours(res.tours);
+            console.log(`
+              =============================================
+              =============================================
+              ============== USETIFUL =====================
+              ================= IS ========================
+              ============== LOADED =======================
+              =============================================
+              =============================================`);
+          });
+        })
+        .catch((error) => {
+          console.log('=====error====>', error.message);
+        });
     };
-
-    fetchData();
+    if (fetchData) fetchData();
   }, [setTours, token]);
 
   useEffect(() => {
@@ -105,6 +116,15 @@ export const Usetiful = ({ children, token }: Props) => {
       ? availableTour.steps[tourStepIndex]
       : undefined;
 
+  const refs = useStore((s) => s.elementRefs);
+
+  const stepType = useMemo(() => {
+    if (step && step.type !== 'pointer') return step.type;
+    else if (step?.type === 'pointer')
+      return refs[step.element] ? 'pointer' : 'slideout';
+    else return undefined;
+  }, [refs, step]);
+
   useEffect(() => {
     if (layoutRef && layoutRef.current) {
       //@ts-ignore
@@ -123,23 +143,21 @@ export const Usetiful = ({ children, token }: Props) => {
           // eslint-disable-next-line react-native/no-inline-styles
           style={{
             ...styles.usetifulLayer,
-            backgroundColor:
-              step.type === 'modal' ? '#000000cc' : 'transparent',
-            justifyContent:
-              step.type === 'slideout' ? 'flex-end' : 'flex-start',
+            backgroundColor: stepType === 'modal' ? '#000000cc' : 'transparent',
+            justifyContent: stepType === 'slideout' ? 'flex-end' : 'flex-start',
           }}
         >
-          {step.type === 'modal' && (
+          {stepType === 'modal' && (
             <Modal step={step} onColse={() => setSelfClosed(true)} />
           )}
-          {step.type === 'pointer' && (
+          {stepType === 'pointer' && (
             <Pointer
               step={step}
               onColse={() => setSelfClosed(true)}
               layoutMeasure={layoutMeasure}
             />
           )}
-          {step.type === 'slideout' && (
+          {stepType === 'slideout' && (
             <Slideout step={step} onColse={() => setSelfClosed(true)} />
           )}
         </View>

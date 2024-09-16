@@ -88,15 +88,6 @@ export const Pointer = ({ step, onColse, layoutMeasure }: Props) => {
           <View
             style={{
               ...styles.dimmer,
-              top: measure.pageY + measure?.height,
-              left: measure.pageX,
-              width: '100%',
-              height: '100%',
-            }}
-          />
-          <View
-            style={{
-              ...styles.dimmer,
               top: measure.pageY,
               left: measure.pageX + measure.width,
               width: '100%',

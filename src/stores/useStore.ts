@@ -20,7 +20,6 @@ export const useStore = create<StoreState>((set) => ({
       refs.forEach(({ key, ref }) => {
         updateRefs[key] = ref;
       });
-      console.log('====updateRefs=====>', updateRefs);
       return { ...state, elementRefs: updateRefs };
     });
   },
